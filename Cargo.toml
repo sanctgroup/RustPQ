@@ -1,6 +1,6 @@
 [package]
 name = "rustpq"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.74"
 license = "Apache-2.0 OR MIT"
@@ -10,7 +10,7 @@ homepage = "https://github.com/sanctgroup/RustPQ"
 authors = ["Sanct"]
 readme = "README.md"
 categories = ["cryptography", "no-std"]
-keywords = ["post-quantum", "cryptography", "kyber", "ml-kem", "pqc"]
+keywords = ["post-quantum", "cryptography", "ml-kem", "ml-dsa", "pqc"]
 
 [lints.clippy]
 all = "warn"
