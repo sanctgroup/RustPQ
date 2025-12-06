@@ -2,24 +2,24 @@
 
 A pure Rust post-quantum cryptography suite by [Sanct](https://github.com/sanctgroup).
 
-[![Crates.io](https://img.shields.io/crates/v/rustpq.svg)](https://crates.io/crates/rustpq)
-[![Documentation](https://docs.rs/rustpq/badge.svg)](https://docs.rs/rustpq)
-[![License](https://img.shields.io/crates/l/rustpq.svg)](LICENSE-MIT)
+[](https://crates.io/crates/rustpq)
+[](https://docs.rs/rustpq)
+[](https://www.google.com/search?q=LICENSE-MIT)
 
 ## Algorithms
 
 | Algorithm | Standard | Status |
 |-----------|----------|--------|
-| ML-KEM (Kyber) | FIPS 203 | ✅ Implemented |
-| ML-DSA (Dilithium) | FIPS 204 | 🚧 Coming soon |
-| SLH-DSA (SPHINCS+) | FIPS 205 | 📋 Planned |
+| ML-KEM (Kyber) | [FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism](https://csrc.nist.gov/pubs/fips/203/final) | Implemented |
+| ML-DSA (Dilithium) | [FIPS 204: Module-Lattice-Based Digital Signature Standard](https://csrc.nist.gov/pubs/fips/204/final) | Coming soon |
+| SLH-DSA (SPHINCS+) | [FIPS 205: Stateless Hash-Based Digital Signature Standard](https://csrc.nist.gov/pubs/fips/205/final) | Planned |
 
 ## Features
 
-- **Pure Rust** - No unsafe code, memory-safe by design
-- **`no_std` Compatible** - Works on embedded devices and bare-metal
-- **Constant-time** - Resistant to timing attacks via the `subtle` crate
-- **Lightweight** - Minimal dependencies
+  - **Pure Rust** - No unsafe code, memory-safe by design
+  - **`no_std` Compatible** - Works on embedded devices and bare-metal
+  - **Constant-time** - Resistant to timing attacks via the `subtle` crate
+  - **Lightweight** - Minimal dependencies
 
 ## Installation
 
@@ -60,14 +60,27 @@ cargo run --example basic --features mlkem768
 cargo run --example aes_encrypt --features mlkem1024
 ```
 
+## Benchmarks
+
+Benchmarks were performed on a Mac M5 Chip. Times represent the mean execution time per operation.
+
+| Parameter Set | Keygen | Encapsulate | Decapsulate |
+|---------------|--------|-------------|-------------|
+| **ML-KEM-512** | 10.43 µs | 8.26 µs | 8.84 µs |
+| **ML-KEM-768** | 16.45 µs | 13.68 µs | 14.70 µs |
+| **ML-KEM-1024** | 25.45 µs | 20.93 µs | 22.97 µs |
+
+To run the benchmarks locally:
+
+```bash
+cargo bench --features "mlkem512 mlkem768 mlkem1024"
+```
+
 ## Development
 
 ```bash
 # Run all tests
 cargo test --all-features
-
-# Run benchmarks
-cargo bench --features "mlkem512 mlkem768 mlkem1024"
 
 # Check for issues
 cargo clippy --all-features
@@ -87,17 +100,18 @@ cargo clippy --all-features
 
 This implementation prioritizes correctness and security:
 
-- Constant-time operations to prevent timing side-channels
-- Zeroization of sensitive data on drop
-- No unsafe code
+  - Constant-time operations to prevent timing side-channels
+  - Zeroization of sensitive data on drop
+  - No unsafe code
 
-⚠️ **Note:** This library has not yet been audited. Use at your own risk in production systems.
+> [\!WARNING]
+> This library has not yet been audited. Use at your own risk in production systems.
 
 ## License
 
 Licensed under either of:
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
-- MIT license ([LICENSE-MIT](LICENSE-MIT))
+  - Apache License, Version 2.0 ([LICENSE-APACHE](https://www.google.com/search?q=LICENSE-APACHE))
+  - MIT license ([LICENSE-MIT](https://www.google.com/search?q=LICENSE-MIT))
 
 at your option.
