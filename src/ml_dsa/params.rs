@@ -2,9 +2,7 @@ pub const N: usize = 256;
 pub const Q: i32 = 8380417;
 pub const QINV: i32 = 58728449;
 pub const D: usize = 13;
-pub const ROOT_OF_UNITY: i32 = 1753;
 pub const SEEDBYTES: usize = 32;
-pub const CRHBYTES: usize = 64;
 pub const TRBYTES: usize = 64;
 
 pub trait Params {

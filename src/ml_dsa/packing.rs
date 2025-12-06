@@ -1,37 +1,5 @@
 use crate::ml_dsa::params::N;
 use crate::ml_dsa::poly::Poly;
-use crate::ml_dsa::polyvec::PolyVec;
-
-pub fn pack_pk<const K: usize>(pk: &mut [u8], rho: &[u8; 32], t1: &PolyVec<K>) {
-    pk[..32].copy_from_slice(rho);
-    let mut pos = 32;
-
-    for i in 0..K {
-        for j in 0..N {
-            let a = t1.vec[i].coeffs[j] as u32;
-            pk[pos] = a as u8;
-            pk[pos + 1] = (a >> 8) as u8;
-            pk[pos + 2] = (a >> 16) as u8;
-            pk[pos + 3] = (a >> 24) as u8;
-            pos += 4;
-        }
-    }
-}
-
-pub fn unpack_pk<const K: usize>(rho: &mut [u8; 32], t1: &mut PolyVec<K>, pk: &[u8]) {
-    rho.copy_from_slice(&pk[..32]);
-    let mut pos = 32;
-
-    for i in 0..K {
-        for j in 0..N {
-            t1.vec[i].coeffs[j] = (pk[pos] as u32
-                | ((pk[pos + 1] as u32) << 8)
-                | ((pk[pos + 2] as u32) << 16)
-                | ((pk[pos + 3] as u32) << 24)) as i32;
-            pos += 4;
-        }
-    }
-}
 
 pub fn polyt1_pack(r: &mut [u8], a: &Poly) {
     for i in 0..N / 4 {

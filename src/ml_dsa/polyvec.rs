@@ -29,9 +29,9 @@ impl<const K: usize> PolyVec<K> {
         }
     }
 
-    pub fn from_montgomery(&mut self) {
+    pub fn reduce_montgomery(&mut self) {
         for i in 0..K {
-            self.vec[i].from_montgomery();
+            self.vec[i].reduce_montgomery();
         }
     }
 

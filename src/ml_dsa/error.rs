@@ -1,9 +1,17 @@
+//! Error types for ML-DSA operations.
+
+/// Errors that can occur during ML-DSA operations.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
+    /// The public key has an invalid length.
     InvalidPublicKeyLength,
+    /// The secret key has an invalid length.
     InvalidSecretKeyLength,
+    /// The signature has an invalid length.
     InvalidSignatureLength,
+    /// The context string exceeds the maximum length of 255 bytes.
     InvalidContextLength,
+    /// The signature verification failed.
     SignatureVerificationFailed,
 }
 

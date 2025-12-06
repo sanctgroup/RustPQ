@@ -1,3 +1,5 @@
+//! ML-DSA signing and verification implementation.
+
 use super::error::Error;
 use super::packing::{polyt0_pack, polyt1_pack};
 use super::params::{Params, SEEDBYTES, TRBYTES};
@@ -14,8 +16,11 @@ macro_rules! impl_dsa {
         pub mod $mod_name {
             use super::*;
 
+            /// Size of the public key in bytes.
             pub const PUBLIC_KEY_BYTES: usize = <$params>::CRYPTO_PUBLICKEYBYTES;
+            /// Size of the secret key in bytes.
             pub const SECRET_KEY_BYTES: usize = <$params>::CRYPTO_SECRETKEYBYTES;
+            /// Size of the signature in bytes.
             pub const SIGNATURE_BYTES: usize = <$params>::CRYPTO_BYTES;
 
             const K: usize = <$params>::K;
@@ -32,16 +37,23 @@ macro_rules! impl_dsa {
             const POLYZ_PACKEDBYTES: usize = <$params>::POLYZ_PACKEDBYTES;
             const POLYETA_PACKEDBYTES: usize = <$params>::POLYETA_PACKEDBYTES;
 
+            /// An ML-DSA public key.
             #[derive(Clone)]
             pub struct PublicKey {
                 bytes: [u8; PUBLIC_KEY_BYTES],
             }
 
             impl PublicKey {
+                /// Returns the public key as a byte slice.
                 pub fn as_bytes(&self) -> &[u8] {
                     &self.bytes
                 }
 
+                /// Constructs a public key from a byte slice.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`Error::InvalidPublicKeyLength`] if the slice length doesn't match.
                 pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != PUBLIC_KEY_BYTES {
                         return Err(Error::InvalidPublicKeyLength);
@@ -54,6 +66,9 @@ macro_rules! impl_dsa {
                 }
             }
 
+            /// An ML-DSA secret key.
+            ///
+            /// The secret key is automatically zeroized when dropped.
             #[derive(Clone)]
             pub struct SecretKey {
                 bytes: [u8; SECRET_KEY_BYTES],
@@ -72,10 +87,16 @@ macro_rules! impl_dsa {
             }
 
             impl SecretKey {
+                /// Returns the secret key as a byte slice.
                 pub fn as_bytes(&self) -> &[u8] {
                     &self.bytes
                 }
 
+                /// Constructs a secret key from a byte slice.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`Error::InvalidSecretKeyLength`] if the slice length doesn't match.
                 pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != SECRET_KEY_BYTES {
                         return Err(Error::InvalidSecretKeyLength);
@@ -88,16 +109,23 @@ macro_rules! impl_dsa {
                 }
             }
 
+            /// An ML-DSA signature.
             #[derive(Clone)]
             pub struct Signature {
                 bytes: [u8; SIGNATURE_BYTES],
             }
 
             impl Signature {
+                /// Returns the signature as a byte slice.
                 pub fn as_bytes(&self) -> &[u8] {
                     &self.bytes
                 }
 
+                /// Constructs a signature from a byte slice.
+                ///
+                /// # Errors
+                ///
+                /// Returns [`Error::InvalidSignatureLength`] if the slice length doesn't match.
                 pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != SIGNATURE_BYTES {
                         return Err(Error::InvalidSignatureLength);
@@ -110,12 +138,30 @@ macro_rules! impl_dsa {
                 }
             }
 
+            /// Generates a new ML-DSA keypair.
+            ///
+            /// # Arguments
+            ///
+            /// * `rng` - A cryptographically secure random number generator.
+            ///
+            /// # Returns
+            ///
+            /// A tuple containing the public key and secret key.
             pub fn generate(rng: &mut impl CryptoRngCore) -> (PublicKey, SecretKey) {
                 let mut seed = [0u8; SEEDBYTES];
                 rng.fill_bytes(&mut seed);
                 generate_deterministic(&seed)
             }
 
+            /// Generates an ML-DSA keypair deterministically from a seed.
+            ///
+            /// # Arguments
+            ///
+            /// * `seed` - A 32-byte seed for deterministic key generation.
+            ///
+            /// # Returns
+            ///
+            /// A tuple containing the public key and secret key.
             pub fn generate_deterministic(seed: &[u8; 32]) -> (PublicKey, SecretKey) {
                 let mut pk = PublicKey {
                     bytes: [0u8; PUBLIC_KEY_BYTES],
@@ -199,6 +245,18 @@ macro_rules! impl_dsa {
                 (pk, sk)
             }
 
+            /// Signs a message using the secret key.
+            ///
+            /// # Arguments
+            ///
+            /// * `sk` - The secret key to sign with.
+            /// * `msg` - The message to sign.
+            /// * `ctx` - An optional context string (max 255 bytes).
+            /// * `rng` - A cryptographically secure random number generator.
+            ///
+            /// # Errors
+            ///
+            /// Returns [`Error::InvalidContextLength`] if the context exceeds 255 bytes.
             pub fn sign(
                 sk: &SecretKey,
                 msg: &[u8],
@@ -215,6 +273,20 @@ macro_rules! impl_dsa {
                 sign_internal(sk, msg, ctx, Some(&rnd))
             }
 
+            /// Signs a message deterministically using the secret key.
+            ///
+            /// This variant does not use additional randomness, making the signature
+            /// deterministic for the same message and key.
+            ///
+            /// # Arguments
+            ///
+            /// * `sk` - The secret key to sign with.
+            /// * `msg` - The message to sign.
+            /// * `ctx` - An optional context string (max 255 bytes).
+            ///
+            /// # Errors
+            ///
+            /// Returns [`Error::InvalidContextLength`] if the context exceeds 255 bytes.
             pub fn sign_deterministic(
                 sk: &SecretKey,
                 msg: &[u8],
@@ -447,6 +519,19 @@ macro_rules! impl_dsa {
                 Ok(sig)
             }
 
+            /// Verifies a signature against a message and public key.
+            ///
+            /// # Arguments
+            ///
+            /// * `pk` - The public key to verify with.
+            /// * `msg` - The message that was signed.
+            /// * `ctx` - The context string used during signing.
+            /// * `sig` - The signature to verify.
+            ///
+            /// # Errors
+            ///
+            /// Returns [`Error::InvalidContextLength`] if the context exceeds 255 bytes.
+            /// Returns [`Error::SignatureVerificationFailed`] if the signature is invalid.
             pub fn verify(
                 pk: &PublicKey,
                 msg: &[u8],

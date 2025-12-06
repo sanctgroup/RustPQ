@@ -32,7 +32,7 @@ impl Poly {
         }
     }
 
-    pub fn from_montgomery(&mut self) {
+    pub fn reduce_montgomery(&mut self) {
         for i in 0..N {
             self.coeffs[i] = montgomery_reduce(self.coeffs[i] as i64);
         }
