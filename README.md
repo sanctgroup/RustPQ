@@ -2,6 +2,7 @@
 
 A pure Rust post-quantum cryptography suite by [Sanct](https://github.com/sanctgroup).
 
+[](https://github.com/sanctgroup/RustPQ/actions/workflows/ci.yml)
 [](https://crates.io/crates/rustpq)
 [](https://docs.rs/rustpq)
 [](https://www.google.com/search?q=LICENSE-MIT)
