@@ -23,9 +23,7 @@ rand_core = { version = "0.6", default-features = false }
 
 [dev-dependencies]
 rand = "0.8"
-hex = "0.4"
 criterion = "0.8"
-aes-gcm = "0.10"
 
 [features]
 default = ["ml-kem", "mlkem768"]
@@ -44,7 +42,3 @@ required-features = ["mlkem512", "mlkem768", "mlkem1024"]
 [[example]]
 name = "basic"
 required-features = ["mlkem768"]
-
-[[example]]
-name = "aes_encrypt"
-required-features = ["mlkem1024"]

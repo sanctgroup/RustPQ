@@ -50,14 +50,11 @@ assert_eq!(shared_secret_sender.as_bytes(), shared_secret_receiver.as_bytes());
 
 ## Examples
 
-Run the included examples:
+Run the included example:
 
 ```bash
 # Basic key encapsulation
 cargo run --example basic --features mlkem768
-
-# ML-KEM + AES-256-GCM encryption
-cargo run --example aes_encrypt --features mlkem1024
 ```
 
 ## Benchmarks
