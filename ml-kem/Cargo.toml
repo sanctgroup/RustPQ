@@ -1,0 +1,50 @@
+[package]
+name = "sanct-ml-kem"
+description = "Pure Rust ML-KEM (FIPS 203) post-quantum key encapsulation mechanism"
+readme = "README.md"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+categories = ["cryptography", "no-std"]
+keywords = ["kyber", "ml-kem", "post-quantum", "kem", "fips203"]
+
+[lints.clippy]
+all = "warn"
+
+[dependencies]
+sha3 = { version = "0.10", default-features = false }
+subtle = { version = "2.5", default-features = false }
+zeroize = { version = "1.8", default-features = false, features = ["derive"] }
+rand_core = { version = "0.6", default-features = false }
+
+[dev-dependencies]
+rand = "0.8"
+hex = "0.4"
+criterion = "0.5"
+sha3 = "0.10"
+aes-gcm = "0.10"
+
+[features]
+default = ["mlkem768"]
+std = ["sha3/std", "rand_core/std"]
+alloc = ["zeroize/alloc"]
+mlkem512 = []
+mlkem768 = []
+mlkem1024 = []
+
+[[bench]]
+name = "kem"
+harness = false
+required-features = ["mlkem512", "mlkem768", "mlkem1024"]
+
+[[example]]
+name = "basic"
+required-features = ["mlkem768"]
+
+[[example]]
+name = "aes_encrypt"
+required-features = ["mlkem1024"]

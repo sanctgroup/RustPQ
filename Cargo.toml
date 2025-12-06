@@ -1,0 +1,41 @@
+[workspace]
+resolver = "2"
+members = [
+    "ml-kem",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/sanctgroup/RustPQ"
+homepage = "https://github.com/sanctgroup/RustPQ"
+authors = ["Sanct"]
+categories = ["cryptography", "no-std"]
+keywords = ["post-quantum", "cryptography", "pqc", "nist"]
+
+[package]
+name = "rustpq"
+description = "Pure Rust post-quantum cryptography suite - ML-KEM, ML-DSA, and more"
+readme = "README.md"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+categories.workspace = true
+keywords.workspace = true
+
+[dependencies]
+sanct-ml-kem = { path = "ml-kem", optional = true }
+
+[features]
+default = ["ml-kem"]
+std = ["sanct-ml-kem?/std"]
+ml-kem = ["dep:sanct-ml-kem"]
+mlkem512 = ["ml-kem", "sanct-ml-kem/mlkem512"]
+mlkem768 = ["ml-kem", "sanct-ml-kem/mlkem768"]
+mlkem1024 = ["ml-kem", "sanct-ml-kem/mlkem1024"]
