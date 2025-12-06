@@ -4,7 +4,7 @@ pub fn power2round(a: i32) -> (i32, i32) {
     let d = 1 << D;
     let mut a1 = (a + (d >> 1) - 1) >> D;
     let a0 = a - (a1 << D);
-    a1 = a1 - ((Q - 1) / d) * ((d >> 1) - a0 >> 31);
+    a1 -= ((Q - 1) / d) * (((d >> 1) - a0) >> 31);
     (a1, a0)
 }
 
@@ -51,21 +51,20 @@ pub fn use_hint<const GAMMA2: usize>(a: i32, hint: bool) -> i32 {
 
     if GAMMA2 == (Q as usize - 1) / 32 {
         if a0 > 0 {
-            return (a1 + 1) & 15;
-        }
-        return (a1 - 1) & 15;
-    } else {
-        if a0 > 0 {
-            if a1 == 43 {
-                return 0;
-            }
-            return a1 + 1;
+            (a1 + 1) & 15
         } else {
-            if a1 == 0 {
-                return 43;
-            }
-            return a1 - 1;
+            (a1 - 1) & 15
         }
+    } else if a0 > 0 {
+        if a1 == 43 {
+            0
+        } else {
+            a1 + 1
+        }
+    } else if a1 == 0 {
+        43
+    } else {
+        a1 - 1
     }
 }
 

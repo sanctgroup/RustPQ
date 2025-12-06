@@ -13,8 +13,7 @@ pub fn reduce32(a: i32) -> i32 {
     // Correct reduction for Q = 8380417
     // This computes t approx a / 2^23, which is close to a / Q
     let t = (a + (1 << 22)) >> 23;
-    let t = a - t * Q;
-    t
+    a - t * Q
 }
 
 #[inline]

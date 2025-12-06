@@ -7,9 +7,9 @@ use sha3::Shake128;
 pub fn expand_a<const K: usize, const L: usize>(rho: &[u8; 32]) -> [PolyVec<L>; K] {
     let mut mat: [PolyVec<L>; K] = core::array::from_fn(|_| PolyVec::new());
 
-    for i in 0..K {
+    for (i, mat_row) in mat.iter_mut().enumerate() {
         for j in 0..L {
-            poly_uniform(&mut mat[i].vec[j], rho, (i as u16) << 8 | (j as u16));
+            poly_uniform(&mut mat_row.vec[j], rho, (i as u16) << 8 | (j as u16));
         }
     }
 
@@ -60,8 +60,8 @@ pub fn challenge<const TAU: usize>(c: &mut Poly, seed: &[u8; 32]) {
     reader.read(&mut buf);
 
     let mut signs = 0u64;
-    for i in 0..8 {
-        signs |= (buf[i] as u64) << (8 * i);
+    for (i, &byte) in buf.iter().enumerate().take(8) {
+        signs |= (byte as u64) << (8 * i);
     }
 
     let mut pos = 8;

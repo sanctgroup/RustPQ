@@ -35,7 +35,7 @@ pub fn unpack_pk<const K: usize>(rho: &mut [u8; 32], t1: &mut PolyVec<K>, pk: &[
 
 pub fn polyt1_pack(r: &mut [u8], a: &Poly) {
     for i in 0..N / 4 {
-        r[5 * i] = (a.coeffs[4 * i] >> 0) as u8;
+        r[5 * i] = a.coeffs[4 * i] as u8;
         r[5 * i + 1] = ((a.coeffs[4 * i] >> 8) | (a.coeffs[4 * i + 1] << 2)) as u8;
         r[5 * i + 2] = ((a.coeffs[4 * i + 1] >> 6) | (a.coeffs[4 * i + 2] << 4)) as u8;
         r[5 * i + 3] = ((a.coeffs[4 * i + 2] >> 4) | (a.coeffs[4 * i + 3] << 6)) as u8;

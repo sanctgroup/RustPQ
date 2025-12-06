@@ -127,10 +127,10 @@ pub fn polyvec_matrix_pointwise_montgomery<const K: usize, const L: usize>(
     let mut r = PolyVec::<K>::new();
     let v_mont = v.to_mont();
 
-    for i in 0..K {
-        r.vec[i] = Poly::pointwise_montgomery(&mat[i].vec[0], &v_mont.vec[0]);
+    for (i, mat_row) in mat.iter().enumerate() {
+        r.vec[i] = Poly::pointwise_montgomery(&mat_row.vec[0], &v_mont.vec[0]);
         for j in 1..L {
-            let t = Poly::pointwise_montgomery(&mat[i].vec[j], &v_mont.vec[j]);
+            let t = Poly::pointwise_montgomery(&mat_row.vec[j], &v_mont.vec[j]);
             r.vec[i].add(&t);
         }
     }

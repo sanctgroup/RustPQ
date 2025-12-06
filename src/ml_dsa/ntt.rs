@@ -42,7 +42,7 @@ pub fn ntt(a: &mut [i32; N]) {
             for j in start..start + len {
                 let t = montgomery_reduce(zeta as i64 * a[j + len] as i64);
                 a[j + len] = a[j] - t;
-                a[j] = a[j] + t;
+                a[j] += t;
             }
             start += 2 * len;
         }
@@ -70,8 +70,8 @@ pub fn invntt_tomont(a: &mut [i32; N]) {
         }
     }
 
-    for i in 0..N {
-        a[i] = montgomery_reduce(F_MONT * a[i] as i64);
+    for coeff in a.iter_mut() {
+        *coeff = montgomery_reduce(F_MONT * *coeff as i64);
     }
 }
 
