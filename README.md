@@ -54,23 +54,23 @@ Run the included examples:
 
 ```bash
 # Basic key encapsulation
-cargo run --example basic -p sanct-ml-kem --features mlkem768
+cargo run --example basic --features mlkem768
 
 # ML-KEM + AES-256-GCM encryption
-cargo run --example aes_encrypt -p sanct-ml-kem --features mlkem1024
+cargo run --example aes_encrypt --features mlkem1024
 ```
 
 ## Development
 
 ```bash
 # Run all tests
-cargo test --workspace --all-features
+cargo test --all-features
 
 # Run benchmarks
-cargo bench -p sanct-ml-kem --features "mlkem512 mlkem768 mlkem1024"
+cargo bench --features "mlkem512 mlkem768 mlkem1024"
 
 # Check for issues
-cargo clippy --workspace --all-features
+cargo clippy --all-features
 ```
 
 ## Feature Flags

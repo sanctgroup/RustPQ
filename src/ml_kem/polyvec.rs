@@ -1,7 +1,7 @@
-use crate::ntt;
-use crate::params::N;
-use crate::poly::Poly;
-use crate::reduce::barrett_reduce;
+use super::ntt;
+use super::params::N;
+use super::poly::Poly;
+use super::reduce::barrett_reduce;
 use zeroize::Zeroize;
 
 #[derive(Clone, Zeroize)]

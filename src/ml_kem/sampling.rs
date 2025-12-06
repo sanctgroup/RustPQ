@@ -1,6 +1,6 @@
-use crate::params::{N, Q};
-use crate::poly::Poly;
-use crate::symmetric::{PrfState, XofState};
+use super::params::{N, Q};
+use super::poly::Poly;
+use super::symmetric::{PrfState, XofState};
 
 const REJ_UNIFORM_BUFLEN: usize = 504;
 

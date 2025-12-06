@@ -1,13 +1,13 @@
-use crate::encode::{
+use super::encode::{
     poly_compress, poly_decompress, poly_from_msg, poly_to_msg, polyvec_compress,
     polyvec_decompress, polyvec_from_bytes, polyvec_to_bytes,
 };
-use crate::ntt;
-use crate::params::{N, POLYBYTES, SYMBYTES};
-use crate::poly::Poly;
-use crate::polyvec::PolyVec;
-use crate::sampling::{sample_poly_cbd_eta1, sample_poly_cbd_eta2, sample_uniform};
-use crate::symmetric::hash_g;
+use super::ntt;
+use super::params::{N, POLYBYTES, SYMBYTES};
+use super::poly::Poly;
+use super::polyvec::PolyVec;
+use super::sampling::{sample_poly_cbd_eta1, sample_poly_cbd_eta2, sample_uniform};
+use super::symmetric::hash_g;
 
 fn gen_matrix<const K: usize>(a: &mut [[Poly; K]; K], seed: &[u8], transposed: bool) {
     for i in 0..K {
@@ -177,11 +177,11 @@ mod tests {
         let coins = [1u8; 32];
         let msg = [2u8; 32];
 
-        let mut pk = [0u8; crate::params::mlkem768::PUBLICKEYBYTES];
+        let mut pk = [0u8; crate::ml_kem::params::mlkem768::PUBLICKEYBYTES];
         let mut sk = [0u8; 3 * POLYBYTES];
         keypair::<3, 2>(&mut pk, &mut sk, &seed);
 
-        let mut ct = [0u8; crate::params::mlkem768::CIPHERTEXTBYTES];
+        let mut ct = [0u8; crate::ml_kem::params::mlkem768::CIPHERTEXTBYTES];
         enc::<3, 2, 2, 10, 4>(&mut ct, &msg, &pk, &coins);
 
         let mut dec_msg = [0u8; 32];

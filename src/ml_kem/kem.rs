@@ -1,6 +1,7 @@
-use crate::indcpa;
-use crate::params::{self, POLYBYTES, SYMBYTES};
-use crate::symmetric::{hash_g, hash_h, kdf};
+use super::error::Error;
+use super::indcpa;
+use super::params::{self, POLYBYTES, SYMBYTES};
+use super::symmetric::{hash_g, hash_h, kdf};
 use rand_core::CryptoRngCore;
 use subtle::{ConditionallySelectable, ConstantTimeEq};
 use zeroize::{Zeroize, Zeroizing};
@@ -26,9 +27,9 @@ macro_rules! impl_kem {
                     &self.bytes
                 }
 
-                pub fn from_bytes(bytes: &[u8]) -> Result<Self, crate::Error> {
+                pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != PUBLIC_KEY_BYTES {
-                        return Err(crate::Error::InvalidPublicKeyLength);
+                        return Err(Error::InvalidPublicKeyLength);
                     }
                     let mut pk = Self {
                         bytes: [0u8; PUBLIC_KEY_BYTES],
@@ -60,9 +61,9 @@ macro_rules! impl_kem {
                     &self.bytes
                 }
 
-                pub fn from_bytes(bytes: &[u8]) -> Result<Self, crate::Error> {
+                pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != SECRET_KEY_BYTES {
-                        return Err(crate::Error::InvalidSecretKeyLength);
+                        return Err(Error::InvalidSecretKeyLength);
                     }
                     let mut sk = Self {
                         bytes: [0u8; SECRET_KEY_BYTES],
@@ -82,9 +83,9 @@ macro_rules! impl_kem {
                     &self.bytes
                 }
 
-                pub fn from_bytes(bytes: &[u8]) -> Result<Self, crate::Error> {
+                pub fn from_bytes(bytes: &[u8]) -> Result<Self, Error> {
                     if bytes.len() != CIPHERTEXT_BYTES {
-                        return Err(crate::Error::InvalidCiphertextLength);
+                        return Err(Error::InvalidCiphertextLength);
                     }
                     let mut ct = Self {
                         bytes: [0u8; CIPHERTEXT_BYTES],

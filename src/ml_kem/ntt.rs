@@ -1,6 +1,6 @@
-use crate::params::N;
-use crate::poly::Poly;
-use crate::reduce::{barrett_reduce, montgomery_reduce};
+use crate::ml_kem::params::N;
+use super::poly::Poly;
+use crate::ml_kem::reduce::{barrett_reduce, montgomery_reduce};
 
 const ZETAS: [i16; 128] = [
     -1044, -758, -359, -1517, 1493, 1422, 287, 202, -171, 622, 1577, 182, 962, -1202, -1474, 1468,
@@ -108,8 +108,8 @@ pub fn basemul(a: &Poly, b: &Poly) -> Poly {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::params::{N, Q};
-    use crate::reduce::barrett_reduce;
+    use crate::ml_kem::params::{N, Q};
+    use crate::ml_kem::reduce::barrett_reduce;
     const MONT: i32 = 2285;
 
     #[test]

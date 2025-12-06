@@ -1,7 +1,7 @@
-use crate::compress::{compress, decompress};
-use crate::params::{N, Q};
-use crate::poly::Poly;
-use crate::polyvec::PolyVec;
+use super::compress::{compress, decompress};
+use super::params::{N, Q};
+use super::poly::Poly;
+use super::polyvec::PolyVec;
 
 fn normalize(a: i16) -> u16 {
     let mut t = a;

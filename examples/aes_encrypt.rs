@@ -3,7 +3,7 @@ use aes_gcm::{
     Aes256Gcm, Nonce,
 };
 use rand::rngs::OsRng;
-use sanct_ml_kem::mlkem1024::{decapsulate, encapsulate, generate};
+use rustpq::ml_kem::mlkem1024::{decapsulate, encapsulate, generate};
 
 fn main() {
     let message = b"Hello World";

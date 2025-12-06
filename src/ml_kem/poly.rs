@@ -1,5 +1,5 @@
-use crate::params::N;
-use crate::reduce::{barrett_reduce, cond_sub_q, montgomery_reduce};
+use super::params::N;
+use super::reduce::{barrett_reduce, cond_sub_q, montgomery_reduce};
 use zeroize::Zeroize;
 
 #[derive(Clone, Zeroize)]

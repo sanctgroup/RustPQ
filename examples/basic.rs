@@ -1,5 +1,5 @@
 use rand::rngs::OsRng;
-use sanct_ml_kem::mlkem768::{decapsulate, encapsulate, generate};
+use rustpq::ml_kem::mlkem768::{decapsulate, encapsulate, generate};
 
 fn main() {
     let (pk, sk) = generate(&mut OsRng);

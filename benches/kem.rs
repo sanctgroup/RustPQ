@@ -2,7 +2,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use rand::rngs::OsRng;
 
 fn bench_mlkem512(c: &mut Criterion) {
-    use sanct_ml_kem::mlkem512::*;
+    use rustpq::ml_kem::mlkem512::*;
 
     let mut group = c.benchmark_group("mlkem512");
 
@@ -24,7 +24,7 @@ fn bench_mlkem512(c: &mut Criterion) {
 }
 
 fn bench_mlkem768(c: &mut Criterion) {
-    use sanct_ml_kem::mlkem768::*;
+    use rustpq::ml_kem::mlkem768::*;
 
     let mut group = c.benchmark_group("mlkem768");
 
@@ -46,7 +46,7 @@ fn bench_mlkem768(c: &mut Criterion) {
 }
 
 fn bench_mlkem1024(c: &mut Criterion) {
-    use sanct_ml_kem::mlkem1024::*;
+    use rustpq::ml_kem::mlkem1024::*;
 
     let mut group = c.benchmark_group("mlkem1024");
 

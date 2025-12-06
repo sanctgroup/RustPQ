@@ -1,4 +1,4 @@
-use crate::params::Q32;
+use crate::ml_kem::params::Q32;
 
 #[inline]
 pub fn compress<const D: usize>(x: i16) -> u16 {
@@ -15,7 +15,7 @@ pub fn decompress<const D: usize>(x: u16) -> i16 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::params::Q;
+    use crate::ml_kem::params::Q;
 
     #[test]
     fn test_compress_decompress_roundtrip() {

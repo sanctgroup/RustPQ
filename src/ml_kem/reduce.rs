@@ -1,4 +1,4 @@
-use crate::params::Q;
+use crate::ml_kem::params::Q;
 
 const QINV: i16 = -3327;
 
@@ -29,7 +29,7 @@ pub fn cond_sub_q(a: i16) -> i16 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::params::Q;
+    use crate::ml_kem::params::Q;
 
     #[test]
     fn test_barrett_reduce() {

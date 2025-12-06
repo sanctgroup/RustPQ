@@ -1,41 +1,50 @@
-[workspace]
-resolver = "2"
-members = [
-    "ml-kem",
-]
-
-[workspace.package]
+[package]
+name = "rustpq"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.74"
 license = "Apache-2.0 OR MIT"
+description = "Pure Rust post-quantum cryptography suite - ML-KEM, ML-DSA, and more"
 repository = "https://github.com/sanctgroup/RustPQ"
 homepage = "https://github.com/sanctgroup/RustPQ"
 authors = ["Sanct"]
-categories = ["cryptography", "no-std"]
-keywords = ["post-quantum", "cryptography", "pqc", "nist"]
-
-[package]
-name = "rustpq"
-description = "Pure Rust post-quantum cryptography suite - ML-KEM, ML-DSA, and more"
 readme = "README.md"
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-repository.workspace = true
-homepage.workspace = true
-authors.workspace = true
-categories.workspace = true
-keywords.workspace = true
+categories = ["cryptography", "no-std"]
+keywords = ["post-quantum", "cryptography", "kyber", "ml-kem", "pqc"]
+
+[lints.clippy]
+all = "warn"
 
 [dependencies]
-sanct-ml-kem = { version = "0.1.0", path = "ml-kem", optional = true }
+sha3 = { version = "0.10", default-features = false }
+subtle = { version = "2.5", default-features = false }
+zeroize = { version = "1.8", default-features = false, features = ["derive"] }
+rand_core = { version = "0.6", default-features = false }
+
+[dev-dependencies]
+rand = "0.8"
+hex = "0.4"
+criterion = "0.5"
+aes-gcm = "0.10"
 
 [features]
-default = ["ml-kem"]
-std = ["sanct-ml-kem?/std"]
-ml-kem = ["dep:sanct-ml-kem"]
-mlkem512 = ["ml-kem", "sanct-ml-kem/mlkem512"]
-mlkem768 = ["ml-kem", "sanct-ml-kem/mlkem768"]
-mlkem1024 = ["ml-kem", "sanct-ml-kem/mlkem1024"]
+default = ["ml-kem", "mlkem768"]
+std = ["sha3/std", "rand_core/std"]
+alloc = ["zeroize/alloc"]
+ml-kem = []
+mlkem512 = ["ml-kem"]
+mlkem768 = ["ml-kem"]
+mlkem1024 = ["ml-kem"]
+
+[[bench]]
+name = "kem"
+harness = false
+required-features = ["mlkem512", "mlkem768", "mlkem1024"]
+
+[[example]]
+name = "basic"
+required-features = ["mlkem768"]
+
+[[example]]
+name = "aes_encrypt"
+required-features = ["mlkem1024"]
