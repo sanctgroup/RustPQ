@@ -33,12 +33,25 @@ ml-kem = []
 mlkem512 = ["ml-kem"]
 mlkem768 = ["ml-kem"]
 mlkem1024 = ["ml-kem"]
+ml-dsa = []
+mldsa44 = ["ml-dsa"]
+mldsa65 = ["ml-dsa"]
+mldsa87 = ["ml-dsa"]
 
 [[bench]]
 name = "kem"
 harness = false
 required-features = ["mlkem512", "mlkem768", "mlkem1024"]
 
+[[bench]]
+name = "dsa"
+harness = false
+required-features = ["mldsa44", "mldsa65", "mldsa87"]
+
 [[example]]
 name = "basic"
 required-features = ["mlkem768"]
+
+[[example]]
+name = "mldsa"
+required-features = ["mldsa44"]

@@ -1,5 +1,6 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 use rand::rngs::OsRng;
+use std::hint::black_box;
 
 fn bench_mlkem512(c: &mut Criterion) {
     use rustpq::ml_kem::mlkem512::*;

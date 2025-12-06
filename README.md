@@ -11,7 +11,7 @@ A pure Rust post-quantum cryptography suite by [Sanct](https://github.com/sanctg
 | Algorithm | Standard | Status |
 |-----------|----------|--------|
 | ML-KEM (Kyber) | [FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism](https://csrc.nist.gov/pubs/fips/203/final) | Implemented |
-| ML-DSA (Dilithium) | [FIPS 204: Module-Lattice-Based Digital Signature Standard](https://csrc.nist.gov/pubs/fips/204/final) | Coming soon |
+| ML-DSA (Dilithium) | [FIPS 204: Module-Lattice-Based Digital Signature Standard](https://csrc.nist.gov/pubs/fips/204/final) | Implemented |
 | SLH-DSA (SPHINCS+) | [FIPS 205: Stateless Hash-Based Digital Signature Standard](https://csrc.nist.gov/pubs/fips/205/final) | Planned |
 
 ## Features
@@ -48,29 +48,34 @@ let shared_secret_receiver = decapsulate(&secret_key, &ciphertext);
 assert_eq!(shared_secret_sender.as_bytes(), shared_secret_receiver.as_bytes());
 ```
 
-## Examples
+### ML-DSA Digital Signatures
 
-Run the included example:
+```rust
+use rustpq::ml_dsa::sign::mldsa44::{generate, sign, verify};
+use rand::rngs::OsRng;
 
-```bash
-# Basic key encapsulation
-cargo run --example basic --features mlkem768
+// Generate a keypair
+let (public_key, secret_key) = generate(&mut OsRng);
+
+// Sign a message
+let message = b"Hello World";
+let context = b""; // Optional context string
+let signature = sign(&secret_key, message, context, &mut OsRng).unwrap();
+
+// Verify the signature
+assert!(verify(&public_key, message, context, &signature).is_ok());
 ```
 
-## Benchmarks
+## Examples
 
-Benchmarks were performed on a Mac M5 Chip. Times represent the mean execution time per operation.
-
-| Parameter Set | Keygen | Encapsulate | Decapsulate |
-|---------------|--------|-------------|-------------|
-| **ML-KEM-512** | 10.43 µs | 8.26 µs | 8.84 µs |
-| **ML-KEM-768** | 16.45 µs | 13.68 µs | 14.70 µs |
-| **ML-KEM-1024** | 25.45 µs | 20.93 µs | 22.97 µs |
-
-To run the benchmarks locally:
+Run the included examples:
 
 ```bash
-cargo bench --features "mlkem512 mlkem768 mlkem1024"
+# ML-KEM key encapsulation
+cargo run --example basic --features mlkem768
+
+# ML-DSA digital signatures
+cargo run --example mldsa --features mldsa44
 ```
 
 ## Development
@@ -91,6 +96,10 @@ cargo clippy --all-features
 | `mlkem512` | ML-KEM-512 parameter set |
 | `mlkem768` | ML-KEM-768 parameter set (default) |
 | `mlkem1024` | ML-KEM-1024 parameter set |
+| `ml-dsa` | Enable ML-DSA |
+| `mldsa44` | ML-DSA-44 parameter set (NIST Level 2) |
+| `mldsa65` | ML-DSA-65 parameter set (NIST Level 3) |
+| `mldsa87` | ML-DSA-87 parameter set (NIST Level 5) |
 | `std` | Enable standard library support |
 
 ## Security
