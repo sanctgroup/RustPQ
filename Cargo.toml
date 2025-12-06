@@ -30,7 +30,7 @@ categories.workspace = true
 keywords.workspace = true
 
 [dependencies]
-sanct-ml-kem = { path = "ml-kem", optional = true }
+sanct-ml-kem = { version = "0.1.0", path = "ml-kem", optional = true }
 
 [features]
 default = ["ml-kem"]
