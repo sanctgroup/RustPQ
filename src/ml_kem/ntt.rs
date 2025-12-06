@@ -1,5 +1,5 @@
-use crate::ml_kem::params::N;
 use super::poly::Poly;
+use crate::ml_kem::params::N;
 use crate::ml_kem::reduce::{barrett_reduce, montgomery_reduce};
 
 const ZETAS: [i16; 128] = [
