@@ -2,10 +2,10 @@
 
 A pure Rust post-quantum cryptography suite by [Sanct](https://github.com/sanctgroup).
 
-[](https://github.com/sanctgroup/RustPQ/actions/workflows/ci.yml)
-[](https://crates.io/crates/rustpq)
-[](https://docs.rs/rustpq)
-[](https://www.google.com/search?q=LICENSE-MIT)
+[![CI](https://github.com/sanctgroup/RustPQ/actions/workflows/ci.yml/badge.svg)](https://github.com/sanctgroup/RustPQ/actions/workflows/ci.yml)
+[![Crates.io](https://img.shields.io/crates/v/rustpq.svg)](https://crates.io/crates/rustpq)
+[![Docs.rs](https://docs.rs/rustpq/badge.svg)](https://docs.rs/rustpq)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Algorithms
 
