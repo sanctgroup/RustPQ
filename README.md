@@ -26,7 +26,7 @@ A pure Rust post-quantum cryptography suite by [Sanct](https://github.com/sanctg
 
 ```toml
 [dependencies]
-rustpq = "0.1"
+rustpq = "0.2.2"
 ```
 
 ## Usage
