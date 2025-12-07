@@ -8,7 +8,7 @@ use crate::ml_kem::mlkem768;
 use rand_core::CryptoRngCore;
 use sha3::{Digest, Sha3_256};
 use x25519_dalek::{EphemeralSecret, PublicKey as X25519PublicKey, StaticSecret};
-use zeroize::Zeroize;
+use zeroize::{Zeroize, Zeroizing};
 
 pub const X25519_PUBLIC_KEY_BYTES: usize = 32;
 pub const MLKEM_PUBLIC_KEY_BYTES: usize = mlkem768::PUBLIC_KEY_BYTES;
@@ -78,8 +78,8 @@ impl Drop for SecretKey {
 }
 
 impl SecretKey {
-    pub fn as_bytes(&self) -> [u8; SECRET_KEY_BYTES] {
-        let mut bytes = [0u8; SECRET_KEY_BYTES];
+    pub fn as_bytes(&self) -> Zeroizing<[u8; SECRET_KEY_BYTES]> {
+        let mut bytes = Zeroizing::new([0u8; SECRET_KEY_BYTES]);
         bytes[..MLKEM_SECRET_KEY_BYTES].copy_from_slice(self.mlkem.as_bytes());
         bytes[MLKEM_SECRET_KEY_BYTES..].copy_from_slice(&self.x25519);
         bytes
@@ -250,8 +250,8 @@ mod tests {
         assert_eq!(pk.as_bytes(), pk_restored.as_bytes());
 
         let sk_bytes = sk.as_bytes();
-        let sk_restored = SecretKey::from_bytes(&sk_bytes).unwrap();
-        assert_eq!(sk.as_bytes(), sk_restored.as_bytes());
+        let sk_restored = SecretKey::from_bytes(&*sk_bytes).unwrap();
+        assert_eq!(*sk.as_bytes(), *sk_restored.as_bytes());
 
         let (ct, _) = encapsulate(&pk, &mut OsRng);
         let ct_bytes = ct.as_bytes();

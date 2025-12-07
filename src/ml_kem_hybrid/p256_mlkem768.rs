@@ -10,7 +10,7 @@ use p256::elliptic_curve::sec1::{FromEncodedPoint, ToEncodedPoint};
 use p256::{EncodedPoint, PublicKey as P256PublicKey, SecretKey as P256SecretKey};
 use rand_core::CryptoRngCore;
 use sha3::{Digest, Sha3_256};
-use zeroize::Zeroize;
+use zeroize::{Zeroize, Zeroizing};
 
 pub const P256_PUBLIC_KEY_BYTES: usize = 65;
 pub const MLKEM_PUBLIC_KEY_BYTES: usize = mlkem768::PUBLIC_KEY_BYTES;
@@ -85,8 +85,8 @@ impl Drop for SecretKey {
 }
 
 impl SecretKey {
-    pub fn as_bytes(&self) -> [u8; SECRET_KEY_BYTES] {
-        let mut bytes = [0u8; SECRET_KEY_BYTES];
+    pub fn as_bytes(&self) -> Zeroizing<[u8; SECRET_KEY_BYTES]> {
+        let mut bytes = Zeroizing::new([0u8; SECRET_KEY_BYTES]);
         bytes[..P256_SECRET_KEY_BYTES].copy_from_slice(&self.p256);
         bytes[P256_SECRET_KEY_BYTES..].copy_from_slice(self.mlkem.as_bytes());
         bytes
@@ -282,8 +282,8 @@ mod tests {
         assert_eq!(pk.as_bytes(), pk_restored.as_bytes());
 
         let sk_bytes = sk.as_bytes();
-        let sk_restored = SecretKey::from_bytes(&sk_bytes).unwrap();
-        assert_eq!(sk.as_bytes(), sk_restored.as_bytes());
+        let sk_restored = SecretKey::from_bytes(&*sk_bytes).unwrap();
+        assert_eq!(*sk.as_bytes(), *sk_restored.as_bytes());
 
         let (ct, _) = encapsulate(&pk, &mut OsRng);
         let ct_bytes = ct.as_bytes();
