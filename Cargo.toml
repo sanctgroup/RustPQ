@@ -1,6 +1,6 @@
 [package]
 name = "rustpq"
-version = "0.2.2"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.74"
 license = "Apache-2.0 OR MIT"
@@ -20,10 +20,14 @@ sha3 = { version = "0.10", default-features = false }
 subtle = { version = "2.5", default-features = false }
 zeroize = { version = "1.8", default-features = false, features = ["derive"] }
 rand_core = { version = "0.6", default-features = false }
+x25519-dalek = { version = "2.0", default-features = false, features = ["static_secrets", "zeroize"], optional = true }
+p256 = { version = "0.13", default-features = false, features = ["ecdh"], optional = true }
+p384 = { version = "0.13", default-features = false, features = ["ecdh"], optional = true }
 
 [dev-dependencies]
 rand = "0.8"
 criterion = "0.8"
+chacha20poly1305 = "0.10"
 
 [features]
 default = ["ml-kem", "mlkem768"]
@@ -37,11 +41,20 @@ ml-dsa = []
 mldsa44 = ["ml-dsa"]
 mldsa65 = ["ml-dsa"]
 mldsa87 = ["ml-dsa"]
+ml-kem-hybrid = ["ml-kem"]
+x25519-mlkem768 = ["ml-kem-hybrid", "mlkem768", "dep:x25519-dalek"]
+p256-mlkem768 = ["ml-kem-hybrid", "mlkem768", "dep:p256"]
+p384-mlkem1024 = ["ml-kem-hybrid", "mlkem1024", "dep:p384"]
 
 [[bench]]
 name = "kem"
 harness = false
 required-features = ["mlkem512", "mlkem768", "mlkem1024"]
+
+[[bench]]
+name = "kem_hybrid"
+harness = false
+required-features = ["x25519-mlkem768", "p256-mlkem768", "p384-mlkem1024"]
 
 [[bench]]
 name = "dsa"
@@ -51,6 +64,14 @@ required-features = ["mldsa44", "mldsa65", "mldsa87"]
 [[example]]
 name = "basic"
 required-features = ["mlkem768"]
+
+[[example]]
+name = "hybrid"
+required-features = ["x25519-mlkem768"]
+
+[[example]]
+name = "e2ee"
+required-features = ["x25519-mlkem768", "mldsa65"]
 
 [[example]]
 name = "mldsa"
