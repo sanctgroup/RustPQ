@@ -162,7 +162,7 @@ impl SharedSecret {
 
     pub fn derive_key(&self) -> [u8; 32] {
         let mut hasher = Sha3_256::new();
-        hasher.update(&self.bytes);
+        hasher.update(self.bytes);
         hasher.finalize().into()
     }
 }
